@@ -1,0 +1,53 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# =========================
+# Virtual environment
+# =========================
+.venv310/
+.env/
+.venv/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Project data (IMPORTANT)
+# =========================
+
+# input PDFs (poza sample)
+pdf/*.pdf
+!pdf/sample_valid_invoice.pdf
+!pdf/sample_invalid_invoice.pdf
+
+# generated files
+out/*
+archive/*
+failed/*
+
+# zostaw strukturę folderów
+!out/.gitkeep
+!archive/.gitkeep
+!failed/.gitkeep
+
+# Excel output (jeśli generowany)
+out/*.xlsx
+
+# =========================
+# Logs (jeśli dodasz kiedyś)
+# =========================
+*.log
