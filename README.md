@@ -98,16 +98,16 @@ pytest
 
 ## 📁 Project Structure
 
-extract/        - PDF text extraction
-parser/         - invoice parsers + registry
-main_files/     - pipeline, models, validators, CLI
-excel/          - Excel export logic
-tests/          - unit and pipeline tests
-docs/           - screenshots
-pdf/            - sample input files
-archive/        - processed files
-failed/         - failed files
-out/            - generated output
+- extract/        - PDF text extraction
+- parser/         - invoice parsers + registry
+- main_files/     - pipeline, models, validators, CLI
+- excel/          - Excel export logic
+- tests/          - unit and pipeline tests
+- docs/           - screenshots
+- pdf/            - sample input files
+- archive/        - processed files
+- failed/         - failed files
+- out/            - generated output
 
 ---
 
