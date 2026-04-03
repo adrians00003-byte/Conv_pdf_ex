@@ -44,9 +44,19 @@ The system is designed as a modular ETL pipeline that handles semi-structured da
 ![Items](docs/items_exel.png)
 
 ### Error handling (Excel - errors sheet)
-![Errors](docs/errors_exel.png)
+![Errors](docs/error_exel.png)
 
 ---
+
+📦 Installation
+git clone https://github.com/adrians00003-byte/Conv_pdf_ex
+cd YOUR_REPO
+
+python -m venv venv
+source venv/bin/activate  # Linux / Mac
+venv\Scripts\activate     # Windows
+
+pip install -r requirements.txt
 
 ## ▶️ Run the Project
 
