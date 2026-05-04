@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            background-color: #0e0202;
+            color: rgb(8, 146, 8);
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            box-sizing: border-box;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .description {
+            font-weight: 700;
+        }
+
+        form {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid rgb(49, 56, 46);
+            padding: 10px;
+        }
+        th {
+            background-color: rgba(8, 146, 8, 0.2);
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <p class="description">{{ description }}</p>
+        <p> Zaznacz plik PDF do przetworzenia(maks 100)</p>
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="invoice_files" accept=".pdf" multiple>
+            <button type="submit">Przetworz</button>
+        </form>
+        
+        {% if upload_files %}
+            <h2>Wynik przesyalania plikow</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nazwa pliku</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in upload_files %}
+                    <tr>
+                        <td>{{ file.filename }}</td>
+                        <td>{{ file.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        
+        {% if preview_rows %}
+            <h2>Podgląd Excela</h2>
+            {% for sheet in preview_rows %}
+                <h3>Arkusz: {{ sheet.name }}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            {% for header in sheet.headers %}
+                                <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in sheet.rows %}
+                            <tr>
+                                {% for value in row.values() %}
+                                    <td>{{ value }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+            <a href="{{ download_url }}" target="_blank">Pobierz gotowy Excel</a>
+        {% endif %}    
+    </div>
+</body>
+</html>

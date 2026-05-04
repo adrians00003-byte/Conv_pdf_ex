@@ -1,6 +1,6 @@
 # 📄 Invoice PDF Parser (ETL Pipeline)
 
-A Python project that extracts structured data from PDF invoices and exports it to Excel.
+A Python project that extracts structured data from PDF invoices and exports it to Excel via a web interface.
 
 The system is designed as a modular ETL pipeline that handles semi-structured data, validates results, and separates successful and failed processing.
 
@@ -8,29 +8,29 @@ The system is designed as a modular ETL pipeline that handles semi-structured da
 
 ## 🚀 Features
 
-- PDF text extraction using PyMuPDF
-- Modular parser system (registry-based selection)
-- Validation of invoice data (e.g. total consistency checks)
-- Export to Excel (invoices, items, errors)
-- Automatic file handling:
-g  - processed → `archive/`
-  - failed → `failed/`
-- Unit and pipeline testing using `pytest` and `monkeypatch`
-
+Web UI for uploading multiple PDF invoices at once
+Upload limit: do 100 plików PDF na raz
+PDF text extraction and parser selection via main_files.pipeline
+Validation of invoice data (status OK / błąd)
+Export to Excel with podglądem i pobraniem
+Automatic file handling:
+uploaded → uploads
+valid → archive
+invalid → failed
+generated Excel → output
+Modular parser architecture, łatwe dodawanie kolejnych formatów
 ---
 
 ## ⚙️ How It Works
 
-1. PDF files are placed in the `pdf/` directory  
-2. Text is extracted from each document  
-3. The correct parser is selected dynamically  
-4. Invoice data is parsed into structured objects  
-5. Validation checks are applied (e.g. `TOTAL_MISMATCH`)  
-6. Results are exported to `out/invoices.xlsx`  
-7. Files are moved:
-   - valid → `archive/`
-   - invalid → `failed/`
-
+Uruchamiasz aplikację webową
+Otwierasz przeglądarkę na http://127.0.0.1:8000
+Wybierasz kilka plików PDF (multiple)
+Klikasz Przetwórz
+Pliki są zapisywane na serwerze w uploads
+Backend odpala parser i generuje wynikowy Excel
+UI pokazuje tabelę wyników oraz podgląd arkuszy
+Możesz pobrać gotowy plik .xlsx
 ---
 
 ## 📊 Example
@@ -40,6 +40,9 @@ g  - processed → `archive/`
 
 ### Failed invoice (PDF)
 ![Failed PDF](docs/failed_pdf.png)
+
+### User Interface
+![UI](docs/UI.png)
 
 ### Parsed invoice data (Excel - invoice sheet)
 ![Invoice](docs/invoice_exel.png)
@@ -76,17 +79,19 @@ pip install -r requirements.txt
 
 ## ▶️ Usage
 ```bash
-python -m main_files.main
+uvicorn web.app:app --reload
 ```
+open http://127.0.0.1:8000
+
  ## 📂 Input
 
-Place PDF invoices into:
-- pdf/
-- 📊 Output
-- out/invoices.xlsx → parsed data
-- archive/ → successfully processed files
-- failed/ → files with errors
-
+Input
+Przesyłaj pliki PDF przez webowy formularz
+Output
+uploads → zapisane pliki PDF
+output → wygenerowany Excel
+archive → poprawnie przetworzone PDF
+failed → pliki z błędami
 ---
 
 ## 🧪 Testing
@@ -98,39 +103,36 @@ pytest
 
 ## 📁 Project Structure
 
-- extract/        - PDF text extraction
-- parser/         - invoice parsers + registry
-- main_files/     - pipeline, models, validators, CLI
-- excel/          - Excel export logic
-- tests/          - unit and pipeline tests
-- docs/           - screenshots
-- pdf/            - sample input files
-- archive/        - processed files
-- failed/         - failed files
-- out/            - generated output
+web - web UI, app, templates, upload/output/archive/failed
+extract - PDF text extraction
+parser - invoice parsers + registry
+main_files - pipeline, modele, walidatory
+excel - Excel export logic
+tests - unit and pipeline tests
+docs - screenshots
 
 ---
 
 ## ⚠️ Current Limitations
 
-- The current parser is designed for a specific invoice layout (Superstore-style)
-- Additional invoice formats require implementing new parsers
-
+Obsługa jednego podstawowego formatu faktury
+Nowe układy faktur wymagają dodania parsera
+Web UI obsługuje maksymalnie 100 plików na upload
 ---
 
 ## 🧠 What This Project Demonstrates
 
-- Working with semi-structured data (PDF → structured output)
-- Designing an ETL pipeline
-- Data validation and error handling
-- Modular architecture (plug-in parsers)
-- Debugging real-world data inconsistencies
-- Writing testable code with controlled inputs
-
+-Praca z półstrukturalnymi danymi (PDF → Excel)
+Projektowanie modularnego pipeline’u ETL
+Walidacja i obsługa błędów
+Webowy interfejs użytkownika z podglądem wyników
+Rozszerzalna architektura parserów
 ---
 
 ## 📌 Future Improvements (optional)
 
-- Support for multiple invoice layouts
-- More advanced item parsing (multi-line / multiple items)
-- Simple UI (CLI improvements or web interface)
+Obsługa wielu układów faktur
+Rozszerzony parser pozycji faktury
+Lepsze walidacje i raportowanie błędów
+Asynchroniczne przetwarzanie większej liczby plików
+UI z wyborem arkuszy i filtrowaniem wyników

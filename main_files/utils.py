@@ -10,8 +10,8 @@ def money(value: Any) -> float:
     na liczbę float.
 
     Dlaczego float, a nie Decimal?
-    - Na MVP Ci wystarczy float do walidacji i Excela.
-    - Jeśli będziesz chciał „księgowo poprawnie”, później przejdziemy na Decimal end-to-end.
+    - Na MVP wystarczy float do walidacji i Excela.
+    - Jak bede chciał „księgowo poprawnie”, później przejde na Decimal end-to-end.
     """
     if value is None:
         return 0.0

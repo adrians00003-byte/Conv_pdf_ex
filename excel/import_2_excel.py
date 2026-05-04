@@ -15,12 +15,36 @@ INVOICE_COLUMNS = [
     "seller_name",
     "bill_to",
     "ship_to",
-    "issue_date",
+    "issue_data",
     "subtotal",
     "discount_amount",
     "shipping",
     "total",
     "items_count",
+]
+
+INVOICE_HEADERS = [
+    "Plik źródłowy",
+    "Szablon",
+    "Numer faktury",
+    "Sprzedawca",
+    "Kupujacy",
+    "Ship To",
+    "Data wystawienia",
+    "Subtotal",
+    "Rabat",
+    "Shipping",
+    "Total",
+    "Liczba pozycji",
+]
+ITEMS_HEADERS = [    
+    "invoice_number",
+    "item_index", 
+    "description",
+    "quantity", 
+    "rate", 
+    "amount",
+    "category",
 ]
 
 ITEM_COLUMNS = [
@@ -67,9 +91,13 @@ def export_to_excel(
      #openpyxl tworzy domyślny arkusz — użyjemy go jako "invoices"
     ws_invoices = wb.active
     ws_invoices.title = "invoice"
+    _write_header(ws_invoices, INVOICE_HEADERS)
+    
     ws_items= wb.create_sheet("items")
-    ws_errors = wb.create_sheet("errors")
+    _write_header(ws_items, ITEMS_HEADERS)
 
+    ws_errors = wb.create_sheet("errors")
+    _write_header(ws_errors, ERROR_COLUMNS)
     # --- invoice + items -----
     for inv in invoices:
         inv_dict = _to_dict(inv)
@@ -81,7 +109,7 @@ def export_to_excel(
             "invoice_number": inv_dict.get("invoice_number"),
             "seller_name": inv_dict.get("seller_name"),
             "bill_to": inv_dict.get("bill_to"),
-            "issue_date": _as_excel_date(inv_dict.get("issue_date")),
+            "issue_data": _as_excel_date(inv_dict.get("issue_data")),
             "ship_to": inv_dict.get("ship_to"),
             "subtotal": inv_dict.get("subtotal"),
             "discount_amount": inv_dict.get("discount_amount"),

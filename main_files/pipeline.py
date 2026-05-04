@@ -26,6 +26,7 @@ def run_batch(
     errors = []
 
     pdf_files = sorted(inbox_dir.glob("*.pdf"))
+    name = Path
     for pdf_path in pdf_files:
         try:
             text = extract_text(pdf_path)
@@ -38,20 +39,20 @@ def run_batch(
             parser = select_parser(text)
             if not parser:
                 errors.append({
-                    "source_file": str(pdf_path),
+                    "source_file": str(pdf_path.name),
                     "error_type": "NO_PARSER",
                     "error_message": "Nie znaleziono parsera pasującego do dokumentu",
                     "template": "unknown",
                 })
                 shutil.move(str(pdf_path), failed_dir / pdf_path.name)
                 continue
-
-            invoice = parser.parse(text=text, source_file=str(pdf_path))
+            
+            invoice = parser.parse(text=text, source_file=str(pdf_path.name))
 
             issues = validate_invoice(invoice)
             if issues:
                 errors.append({
-                    "source_file": str(pdf_path),
+                    "source_file": str(pdf_path.name),
                     "error_type": "VALIDATION_FAIL",
                     "error_message": ";".join(issues),
                     "template": getattr(parser, "name", "unknown"),
@@ -65,7 +66,7 @@ def run_batch(
 
         except Exception as e:
             errors.append({
-                "source_file": str(pdf_path),
+                "source_file": str(pdf_path.name),
                 "error_type": "EXCEPTION",
                 "error_message": str(e),
                 "template": "unknown",
