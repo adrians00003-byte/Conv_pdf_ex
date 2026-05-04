@@ -6,4 +6,4 @@ env/
 outputs/
 uploads/
 archive/
-failed/
+failed/.venv310/
