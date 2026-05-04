@@ -7,3 +7,11 @@ outputs/
 uploads/
 archive/
 failed/.venv310/
+.venv/
+.venv310/
+__pycache__/
+*.pyc
+web/uploads/
+web/outputs/
+web/archive/
+web/failed/
